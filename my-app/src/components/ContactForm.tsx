@@ -1,75 +1,57 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
 type Props = { title: string }
 
-type State = {
-  name: string,
-  email: string,
-  message: string,
-  [key: string]: any; // or the type of your input
-}
+export const ContactForm = ({ title }: Props) => {
 
-export class ContactForm extends React.Component<Props, State> {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
-  state = {
-    name: '',
-    email: '',
-    message: ''
-  }
-
-  handleChange = (e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLTextAreaElement>) => {
-    const { name, value } = e.target as any;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
-  submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert('Message sent.');
-    this.setState({
-      name: '',
-      email: '',
-      message: ''
-    });
+    alert(`
+    Hi, ${name} sen't you a message.
+    Email: ${email}
+    Message: ${message}`);
+    setName("");
+    setEmail("");
+    setMessage("");
   }
 
-  render() {
-    return (
-      <section>
-        <h3 className="title">{this.props.title}</h3>
-        <form onSubmit={this.submitForm}>
-          <input type="text"
-            name="name"
-            value={this.state.name}
-            onChange={this.handleChange}
-            id="name"
-            placeholder="Name"
-            className="form-field"
-            required
-            autoFocus />
-          <input type="email"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleChange}
-            id="email"
-            placeholder="Email"
-            className="form-field"
-            required />
-          <textarea
-            name="message"
-            value={this.state.message}
-            onChange={this.handleChange}
-            id="message"
-            placeholder="Message"
-            rows={4}
-            className="form-field"
-            required>
-          </textarea>
-          <input type="submit" value="Send Message" className="btn"></input>
-        </form>
-      </section>
-    )
-  }
+  return (
+    <section>
+      <h3 className="title">{title}</h3>
+      <form onSubmit={submitForm}>
+        <input type="text"
+          name="name"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          id="name"
+          placeholder="Name"
+          className="form-field"
+          required
+          autoFocus />
+        <input type="email"
+          name="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          id="email"
+          placeholder="Email"
+          className="form-field"
+          required />
+        <textarea
+          name="message"
+          value={message}
+          onChange={e => setMessage(e.target.value)}
+          id="message"
+          placeholder="Message"
+          rows={4}
+          className="form-field"
+          required>
+        </textarea>
+        <input type="submit" value="Send Message" className="btn"></input>
+      </form>
+    </section>
+  )
 }
